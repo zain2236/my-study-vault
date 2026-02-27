@@ -211,6 +211,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
   const isRouteLoading = navigation.state === 'loading';
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropJustHappenedRef = useRef(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadMessage, setUploadMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
@@ -313,7 +314,12 @@ function DashboardContent({ data }: { data: DashboardData }) {
     e.preventDefault();
     e.stopPropagation();
     const file = e.dataTransfer.files?.[0];
-    if (file) handleFileSelect(file);
+    if (file) {
+      dropJustHappenedRef.current = true;
+      handleFileSelect(file);
+      // Reset flag after a short delay so normal clicks work again
+      setTimeout(() => { dropJustHappenedRef.current = false; }, 300);
+    }
   };
 
   const handleResourceTypeChange = (type: string | null) => {
@@ -346,6 +352,17 @@ function DashboardContent({ data }: { data: DashboardData }) {
 
     const form = e.currentTarget;
     const baseFormData = new FormData(form);
+
+    // Validate all required form fields BEFORE uploading
+    const title = baseFormData.get('title') as string | null;
+    const semester = baseFormData.get('semester') as string | null;
+    const subject = baseFormData.get('subject') as string | null;
+    const resource_type = baseFormData.get('resource_type') as string | null;
+
+    if (!title?.trim() || !semester?.trim() || !subject?.trim() || !resource_type?.trim() || resource_type === 'Select Type') {
+      setUploadMessage({ type: 'error', text: 'All fields are required. Please fill them' });
+      return;
+    }
 
     setIsUploading(true);
     setUploadProgress(0);
@@ -505,6 +522,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
         </div>
       ) : (
         <>
+
+        {/* // show Filter Options */}
           <div className="flex flex-wrap gap-3 mb-6">
             {filterOptions.map((option) => {
               const isActive = resourceType === option.value;
@@ -638,7 +657,10 @@ function DashboardContent({ data }: { data: DashboardData }) {
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Upload File</label>
                 <div
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => {
+                    if (dropJustHappenedRef.current) return;
+                    fileInputRef.current?.click();
+                  }}
                   onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                   onDrop={handleDragDrop}
                   className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-[#d97757] transition-colors cursor-pointer"
