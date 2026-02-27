@@ -68,6 +68,15 @@ export const meta: MetaFunction = () => {
 };
 
 
+// Prevent revalidation for load-more and download fetcher actions
+export function shouldRevalidate({ formData, defaultShouldRevalidate }: { formData?: FormData; defaultShouldRevalidate: boolean; [key: string]: any }) {
+  const intent = formData?.get('intent');
+  if (intent === 'load-more' || intent === 'download') {
+    return false;
+  }
+  return defaultShouldRevalidate;
+}
+
 // Loader function
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
@@ -139,6 +148,45 @@ export async function action({ request }: { request: Request }) {
         hasMore: result.hasMore,
         success: true
       };
+    }
+
+    // Handle download — validate resource & file existence, return download URL
+    if (intent === 'download') {
+      const resourceId = formData.get('resourceId');
+      if (!resourceId) return { error: 'Resource ID is required' };
+
+      try {
+        const { getResourceForDownload } = await import('~/utils/prisma/resource-prisma.server');
+        const resource = await getResourceForDownload(Number(resourceId));
+        if (!resource) {
+          return { error: 'Resource not found. It may have been deleted.' };
+        }
+
+        const filePath = resource.file_path;
+
+        // Check if file exists in storage (local or R2)
+        let exists = false;
+        if (filePath.startsWith('/uploads/')) {
+          const { fileExists } = await import('~/utils/download/download-helpers.server');
+          exists = fileExists(filePath);
+        } else {
+          const { objectExistsInR2 } = await import('~/utils/r2/r2.server');
+          exists = await objectExistsInR2(filePath);
+        }
+
+        if (!exists) {
+          return { error: 'File not found in storage. The file may have been deleted.' };
+        }
+
+        // File exists; return download URL for client to handle.
+        // The actual download route (/download/:id) handles incrementing the download count.
+        return {
+          success: true,
+          downloadUrl: `/download/${resourceId}`
+        };
+      } catch (error) {
+        return { error: 'Download failed. Please try again.' };
+      }
     }
 
     return { success: false, error: 'Invalid action' };
@@ -281,15 +329,7 @@ function BrowseResourcesContent({ data }: BrowseResourcesContentProps) {
 
   const isLoadingMore = fetcher.state === 'submitting';
 
-  const handleResourceDownloaded = useCallback((id: number) => {
-    setAllResources(prev =>
-      prev.map(resource =>
-        resource.id === id
-          ? { ...resource, downloads: resource.downloads + 1 }
-          : resource
-      )
-    );
-  }, []);
+
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] dark:bg-gray-800 py-8 lg:py-12">
@@ -336,7 +376,6 @@ function BrowseResourcesContent({ data }: BrowseResourcesContentProps) {
                 <BrowseResourceCard
                   key={resource.id}
                   resource={resource}
-                  onDownloaded={handleResourceDownloaded}
                 />
               ))}
             </div>

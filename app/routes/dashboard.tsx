@@ -22,6 +22,14 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
+export function shouldRevalidate({ formData, defaultShouldRevalidate }: { formData?: FormData; defaultShouldRevalidate: boolean; [key: string]: any }) {
+  const intent = formData?.get('intent');
+  if (intent === 'load-more' || intent === 'download') {
+    return false;
+  }
+  return defaultShouldRevalidate;
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
   const userId = await getUserId(request);
   if (!userId) return redirect('/login');
@@ -211,6 +219,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
   const isRouteLoading = navigation.state === 'loading';
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropJustHappenedRef = useRef(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadMessage, setUploadMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
@@ -249,7 +258,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
     };
   }, [data.semesterCounts]);
 
-  const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+  const MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
   const ALLOWED_TYPES = [
     'application/pdf',
     'application/msword',
@@ -313,18 +322,15 @@ function DashboardContent({ data }: { data: DashboardData }) {
     e.preventDefault();
     e.stopPropagation();
     const file = e.dataTransfer.files?.[0];
-    if (file) handleFileSelect(file);
+    if (file) {
+      dropJustHappenedRef.current = true;
+      handleFileSelect(file);
+      // Reset flag after a short delay so normal clicks work again
+      setTimeout(() => { dropJustHappenedRef.current = false; }, 300);
+    }
   };
 
-  const handleResourceTypeChange = (type: string | null) => {
-    const params = new URLSearchParams(searchParams);
-    if (type && type !== 'all') {
-      params.set('type', type);
-    } else {
-      params.delete('type');
-    }
-    navigate(`?${params.toString()}`, { replace: true });
-  };
+
 
   const handleUploadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -335,7 +341,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
     }
 
     if (selectedFile.size > MAX_SIZE_BYTES) {
-      setUploadMessage({ type: 'error', text: 'File too large. Maximum size is 10MB.' });
+      setUploadMessage({ type: 'error', text: 'File too large. Maximum size is 20MB.' });
       return;
     }
 
@@ -346,6 +352,17 @@ function DashboardContent({ data }: { data: DashboardData }) {
 
     const form = e.currentTarget;
     const baseFormData = new FormData(form);
+
+    // Validate all required form fields BEFORE uploading
+    const title = baseFormData.get('title') as string | null;
+    const semester = baseFormData.get('semester') as string | null;
+    const subject = baseFormData.get('subject') as string | null;
+    const resource_type = baseFormData.get('resource_type') as string | null;
+
+    if (!title?.trim() || !semester?.trim() || !subject?.trim() || !resource_type?.trim() || resource_type === 'Select Type') {
+      setUploadMessage({ type: 'error', text: 'All fields are required. Please fill them' });
+      return;
+    }
 
     setIsUploading(true);
     setUploadProgress(0);
@@ -453,31 +470,10 @@ function DashboardContent({ data }: { data: DashboardData }) {
 
   const semesterOptions = [1, 2, 3, 4, 5, 6, 7, 8];
 
-  // Filter options
-  const filterOptions = [
-    { label: 'All Types', value: null, icon: Filter },
-    { label: 'Notes', value: 'Notes' },
-    { label: 'Assignment', value: 'Assignment' },
-    { label: 'Quiz', value: 'Quiz' },
-  ];
+
 
   return (
-    <>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">My Resources</h2>
-          <p className="text-gray-600 dark:text-gray-300 mt-1">Manage and organize your uploaded materials</p>
-        </div>
-        <button
-          onClick={() => setUploadModalOpen(true)}
-          className="flex items-center justify-center gap-2 bg-[#d97757] text-white px-5 py-2.5 rounded-lg hover:bg-[#c66847] transition-colors duration-200 font-medium text-sm shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#d97757]/50 focus:ring-offset-2"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Upload Resource</span>
-        </button>
-      </div>
-
-
+    <DashboardShell onUploadClick={() => setUploadModalOpen(true)}>
       {/* Show error message if there is an error */}
       {data.error ? (
         <div className="bg-white dark:bg-gray-700 rounded-xl p-12 text-center">
@@ -505,26 +501,6 @@ function DashboardContent({ data }: { data: DashboardData }) {
         </div>
       ) : (
         <>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {filterOptions.map((option) => {
-              const isActive = resourceType === option.value;
-              const Icon = option.icon;
-              return (
-                <button
-                  key={option.label}
-                  onClick={() => handleResourceTypeChange(option.value)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium ${isActive
-                      ? 'bg-[#d97757]/15 dark:bg-[#d97757]/25 text-[#d97757] dark:text-[#c66847] border-[#d97757]/30 dark:border-[#d97757]/40'
-                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:border-[#d97757]/50 hover:text-[#d97757] text-gray-900 dark:text-gray-100'
-                    }`}
-                >
-                  {Icon && <Icon className="w-4 h-4" />}
-                  <span>{option.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
           {/* Show resources or empty state */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {allResources.length > 0 ? (
@@ -638,7 +614,10 @@ function DashboardContent({ data }: { data: DashboardData }) {
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Upload File</label>
                 <div
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => {
+                    if (dropJustHappenedRef.current) return;
+                    fileInputRef.current?.click();
+                  }}
                   onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                   onDrop={handleDragDrop}
                   className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-[#d97757] transition-colors cursor-pointer"
@@ -652,7 +631,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
                   ) : (
                     <>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Click to upload or drag and drop</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">PDF, DOCX, JPG, PNG (Max 10MB)</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">PDF, DOCX, JPG, PNG (Max 20MB)</p>
                     </>
                   )}
                   <input
@@ -695,48 +674,46 @@ function DashboardContent({ data }: { data: DashboardData }) {
           </div>
         </div>
       )}
-    </>
+    </DashboardShell>
   );
 }
 
-function DashboardFallback() {
+
+// Card skeleton for loading state
+function CardsSkeleton() {
   return (
-    <>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-        <div>
-          <div className="h-6 w-40 bg-gray-200 dark:bg-gray-600 rounded-md animate-pulse" />
-          <div className="h-4 w-64 bg-gray-200 dark:bg-gray-700 rounded-md mt-3 animate-pulse" />
-        </div>
-        <div className="h-10 w-40 bg-[#d97757]/40 rounded-lg animate-pulse" />
-      </div>
-
-      <div className="flex flex-wrap gap-3 mb-6">
-        {Array.from({ length: 4 }).map((_, idx) => (
-          <div
-            key={idx}
-            className="h-9 w-28 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg animate-pulse"
-          />
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, idx) => (
-          <div
-            key={idx}
-            className="bg-white dark:bg-gray-700 rounded-xl p-6 space-y-4 border border-gray-200/70 dark:border-gray-600/70 animate-pulse"
-          >
-            <div className="h-4 w-24 bg-gray-200 dark:bg-gray-600 rounded-full" />
-            <div className="h-5 w-3/4 bg-gray-200 dark:bg-gray-600 rounded-full" />
-            <div className="h-3 w-full bg-gray-200 dark:bg-gray-600 rounded-full" />
-            <div className="h-3 w-2/3 bg-gray-200 dark:bg-gray-600 rounded-full" />
-            <div className="flex justify-between items-center pt-2">
-              <div className="h-3 w-16 bg-gray-200 dark:bg-gray-600 rounded-full" />
-              <div className="h-8 w-24 bg-gray-200 dark:bg-gray-600 rounded-lg" />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 6 }).map((_, idx) => (
+        <article
+          key={idx}
+          className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-pulse"
+        >
+          {/* Header area matching ResourceCard */}
+          <div className="bg-[#d97757]/10 dark:bg-[#d97757]/20 p-5">
+            <div className="flex items-start justify-between">
+              <div className="w-12 h-12 bg-[#d97757]/20 dark:bg-[#d97757]/30 rounded-lg" />
+              <div className="w-8 h-8 bg-[#d97757]/20 dark:bg-[#d97757]/30 rounded-lg" />
+            </div>
+            <div className="mt-4 flex items-center gap-2">
+              <div className="h-5 w-16 bg-[#d97757]/20 dark:bg-[#d97757]/30 rounded-full" />
             </div>
           </div>
-        ))}
-      </div>
-    </>
+          {/* Body area */}
+          <div className="p-5 space-y-4">
+            <div className="h-5 w-3/4 bg-gray-200 dark:bg-gray-600 rounded" />
+            <div className="space-y-2">
+              <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-600 rounded" />
+              <div className="h-4 w-1/3 bg-gray-200 dark:bg-gray-600 rounded" />
+            </div>
+            <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div className="h-3 w-24 bg-gray-200 dark:bg-gray-600 rounded" />
+              <div className="h-4 w-10 bg-gray-200 dark:bg-gray-600 rounded" />
+            </div>
+            <div className="h-10 w-full bg-gray-200 dark:bg-gray-600 rounded-lg" />
+          </div>
+        </article>
+      ))}
+    </div>
   );
 }
 
@@ -744,10 +721,76 @@ export default function Dashboard() {
   const { resourcesData } = useLoaderData<typeof loader>();
 
   return (
-    <Suspense fallback={<DashboardFallback />}>
+    <Suspense fallback={<DashboardShell><CardsSkeleton /></DashboardShell>}>
       <Await resolve={resourcesData}>
         {(data: DashboardData) => <DashboardContent data={data} />}
       </Await>
     </Suspense>
+  );
+}
+
+// Dashboard Shell Component
+function DashboardShell({ children, onUploadClick }: { children: React.ReactNode; onUploadClick?: () => void }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const resourceType = searchParams.get('type') || null;
+
+  const filterOptions = [
+    { label: 'All Types', value: null, icon: Filter },
+    { label: 'Notes', value: 'Notes' },
+    { label: 'Assignment', value: 'Assignment' },
+    { label: 'Quiz', value: 'Quiz' },
+  ];
+
+  const handleResourceTypeChange = (type: string | null) => {
+    const params = new URLSearchParams(searchParams);
+    if (type && type !== 'all') {
+      params.set('type', type);
+    } else {
+      params.delete('type');
+    }
+    navigate(`?${params.toString()}`, { replace: true });
+  };
+
+  return (
+    <>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">My Resources</h2>
+          <p className="text-gray-600 dark:text-gray-300 mt-1">Manage and organize your uploaded materials</p>
+        </div>
+        {onUploadClick && (
+          <button
+            onClick={onUploadClick}
+            className="flex items-center justify-center gap-2 bg-[#d97757] text-white px-5 py-2.5 rounded-lg hover:bg-[#c66847] transition-colors duration-200 font-medium text-sm shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#d97757]/50 focus:ring-offset-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Upload Resource</span>
+          </button>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-3 mb-6">
+        {filterOptions.map((option) => {
+          const isActive = resourceType === option.value;
+          const Icon = option.icon;
+          return (
+            <button
+              key={option.label}
+              onClick={() => handleResourceTypeChange(option.value)}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium ${isActive
+                  ? 'bg-[#d97757]/15 dark:bg-[#d97757]/25 text-[#d97757] dark:text-[#c66847] border-[#d97757]/30 dark:border-[#d97757]/40'
+                  : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:border-[#d97757]/50 hover:text-[#d97757] text-gray-900 dark:text-gray-100'
+                }`}
+            >
+              {Icon && <Icon className="w-4 h-4" />}
+              <span>{option.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {children}
+    </>
   );
 }

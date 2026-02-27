@@ -4,7 +4,7 @@ import { getUserId } from '~/utils/cookie-session/session.server';
 import { createResource } from '~/utils/prisma/dashboard-prisma.server';
 import { createPresignedUploadUrl } from '~/utils/r2/r2.server';
 
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
 const ALLOWED_TYPES = [
   'application/pdf',
   'application/msword',
@@ -31,7 +31,7 @@ function validateFileMeta(size: number, type: string, name: string) {
     return 'Invalid file size.';
   }
   if (size > MAX_SIZE_BYTES) {
-    return 'File too large. Maximum size is 10MB.';
+    return 'File too large. Maximum size is 20MB.';
   }
   if (!isAllowedFileType(name, type)) {
     return 'Invalid file type. Only PDF, DOCX, JPG, PNG allowed.';
@@ -68,6 +68,7 @@ export async function action({ request }: Route.ActionArgs) {
       );
     }
 
+    // Validate fileSIze on server 
     const fileSize = Number(fileSizeRaw);
     const validationError = validateFileMeta(fileSize, fileType, fileName);
     if (validationError) {
@@ -78,6 +79,7 @@ export async function action({ request }: Route.ActionArgs) {
     }
 
     // Create a new folder named user-${userId} and a key for the uploaded file
+    // (Each user have it's own folder with there private key ) 
     const safeName = sanitizeFileName(fileName);
     const key = `user-${userId}/${Date.now()}-${safeName}`;
 
