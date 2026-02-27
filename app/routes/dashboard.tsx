@@ -22,6 +22,14 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
+export function shouldRevalidate({ formData, defaultShouldRevalidate }: { formData?: FormData; defaultShouldRevalidate: boolean; [key: string]: any }) {
+  const intent = formData?.get('intent');
+  if (intent === 'load-more' || intent === 'download') {
+    return false;
+  }
+  return defaultShouldRevalidate;
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
   const userId = await getUserId(request);
   if (!userId) return redirect('/login');
@@ -670,6 +678,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
   );
 }
 
+
+// Card skeleton for loading state
 function CardsSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -68,6 +68,15 @@ export const meta: MetaFunction = () => {
 };
 
 
+// Prevent revalidation for load-more and download fetcher actions
+export function shouldRevalidate({ formData, defaultShouldRevalidate }: { formData?: FormData; defaultShouldRevalidate: boolean; [key: string]: any }) {
+  const intent = formData?.get('intent');
+  if (intent === 'load-more' || intent === 'download') {
+    return false;
+  }
+  return defaultShouldRevalidate;
+}
+
 // Loader function
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
