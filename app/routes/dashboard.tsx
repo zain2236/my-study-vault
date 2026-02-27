@@ -249,7 +249,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
     };
   }, [data.semesterCounts]);
 
-  const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+  const MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
   const ALLOWED_TYPES = [
     'application/pdf',
     'application/msword',
@@ -335,7 +335,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
     }
 
     if (selectedFile.size > MAX_SIZE_BYTES) {
-      setUploadMessage({ type: 'error', text: 'File too large. Maximum size is 10MB.' });
+      setUploadMessage({ type: 'error', text: 'File too large. Maximum size is 20MB.' });
       return;
     }
 
@@ -652,7 +652,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
                   ) : (
                     <>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Click to upload or drag and drop</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">PDF, DOCX, JPG, PNG (Max 10MB)</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">PDF, DOCX, JPG, PNG (Max 20MB)</p>
                     </>
                   )}
                   <input
