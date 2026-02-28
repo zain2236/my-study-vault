@@ -1,4 +1,5 @@
 import type { Route } from './+types/reset-password';
+import type { MetaFunction } from 'react-router';
 import { Form, Link, redirect, useActionData, useLoaderData, useNavigation } from 'react-router';
 import { useState } from 'react';
 import { Lock, ArrowLeft, Eye, EyeOff, Loader2, ShieldAlert } from 'lucide-react';
@@ -7,6 +8,39 @@ import prisma from '../../utils/prisma.server';
 import { hashToken } from '~/utils/crypto/token.server';
 import { hashPassword } from '~/utils/password/password.server';
 import { validatePasswordLength } from '~/utils/validation/auth-validation.server';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Reset Password - Study Vault' },
+    {
+      name: 'description',
+      content: 'Create a new password for your Study Vault account. Enter your new password to regain access to your resources.',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://studyvault.com/reset-password' },
+    { property: 'og:title', content: 'Reset Password - Study Vault' },
+    {
+      property: 'og:description',
+      content: 'Create a new password for your Study Vault account.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Reset Password - Study Vault' },
+    {
+      name: 'twitter:description',
+      content: 'Create a new password for your Study Vault account.',
+    },
+    { name: 'twitter:site', content: '@studyvault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'theme-color', content: '#d97757' },
+  ];
+};
 
 type LoaderData = {
   valid: boolean;

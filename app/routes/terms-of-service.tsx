@@ -1,3 +1,4 @@
+import type { MetaFunction } from 'react-router';
 import {
   HeroSection,
   NavigationSidebar,
@@ -13,6 +14,45 @@ import {
   ContactSection,
   AcknowledgmentSection
 } from '../components/terms-of-service-component';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Terms of Service - Study Vault' },
+    {
+      name: 'description',
+      content: 'Read Study Vault\'s Terms of Service. Understand your rights and responsibilities when using our platform to upload, share, and access educational resources.',
+    },
+    {
+      name: 'keywords',
+      content: 'study vault terms of service, terms and conditions, user agreement, acceptable use policy, student platform terms',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://studyvault.com/terms-of-service' },
+    { property: 'og:title', content: 'Terms of Service - Study Vault' },
+    {
+      property: 'og:description',
+      content: 'Read Study Vault\'s Terms of Service. Understand your rights and responsibilities when using our platform.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+    { property: 'og:locale', content: 'en_US' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Terms of Service - Study Vault' },
+    {
+      name: 'twitter:description',
+      content: 'Read Study Vault\'s Terms of Service. Understand your rights and responsibilities when using our platform.',
+    },
+    { name: 'twitter:site', content: '@studyvault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'index, follow' },
+    { name: 'author', content: 'Study Vault' },
+    { name: 'theme-color', content: '#d97757' },
+  ];
+};
 
 export default function TermsOfServicePage() {
   return (

@@ -1,4 +1,5 @@
 import type { Route } from './+types/sign-up';
+import type { MetaFunction } from 'react-router';
 import { useState } from 'react';
 import { Form, Link, useNavigation, useActionData, redirect } from 'react-router';
 import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
@@ -7,6 +8,43 @@ import prisma from '../../utils/prisma.server';
 import { hashPassword } from '../../utils/password/password.server';
 import { createLoginSession, getUserId } from '~/utils/cookie-session/session.server';
 import { validateEmail, validatePasswordLength } from '~/utils/validation/auth-validation.server';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Sign Up - Study Vault | Create Your Free Account' },
+    {
+      name: 'description',
+      content: 'Create your free Study Vault account. Join thousands of students uploading, organizing, and sharing educational resources. Get started in seconds.',
+    },
+    {
+      name: 'keywords',
+      content: 'study vault sign up, create account, student registration, free account, join study vault',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://studyvault.com/sign-up' },
+    { property: 'og:title', content: 'Sign Up - Study Vault | Create Your Free Account' },
+    {
+      property: 'og:description',
+      content: 'Create your free Study Vault account and join thousands of students sharing educational resources.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Sign Up - Study Vault | Create Your Free Account' },
+    {
+      name: 'twitter:description',
+      content: 'Create your free Study Vault account and join thousands of students sharing educational resources.',
+    },
+    { name: 'twitter:site', content: '@studyvault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'theme-color', content: '#d97757' },
+  ];
+};
 
 type ActionData = {
   error?: string;
@@ -64,7 +102,6 @@ export async function action({ request }: Route.ActionArgs) {
       return { error: 'Failed to create user' } satisfies ActionData;
     }
 
-    // Create session for user 
     return await createLoginSession(user.id, '/user/dashboard');
   } catch (error) {
     return { error: 'Failed to create user. Please try again.' } satisfies ActionData;

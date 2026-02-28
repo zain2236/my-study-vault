@@ -24,6 +24,8 @@
       "routes/auth/logout": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/google": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/google.callback": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/auth/forgot-password": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/auth/reset-password": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/download.$id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api.r2-upload": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -145,6 +147,20 @@
         "parentId": "layout/auth-layout",
         "file": "app/routes/auth/google.callback.tsx",
         "path": "auth/google/callback",
+        "config": {}
+      },
+      "routes/auth/forgot-password": {
+        "id": "routes/auth/forgot-password",
+        "parentId": "layout/auth-layout",
+        "file": "app/routes/auth/forgot-password.tsx",
+        "path": "forgot-password",
+        "config": {}
+      },
+      "routes/auth/reset-password": {
+        "id": "routes/auth/reset-password",
+        "parentId": "layout/auth-layout",
+        "file": "app/routes/auth/reset-password.tsx",
+        "path": "reset-password",
         "config": {}
       },
       "routes/download.$id": {
@@ -288,6 +304,18 @@
         "file": "routes/auth/google.callback.tsx",
         "path": "auth/google/callback"
       },
+      "routes/auth/forgot-password": {
+        "id": "routes/auth/forgot-password",
+        "parentId": "layout/auth-layout",
+        "file": "routes/auth/forgot-password.tsx",
+        "path": "forgot-password"
+      },
+      "routes/auth/reset-password": {
+        "id": "routes/auth/reset-password",
+        "parentId": "layout/auth-layout",
+        "file": "routes/auth/reset-password.tsx",
+        "path": "reset-password"
+      },
       "routes/download.$id": {
         "id": "routes/download.$id",
         "parentId": "root",
@@ -391,6 +419,14 @@
               {
                 "file": "routes/auth/google.callback.tsx",
                 "path": "auth/google/callback"
+              },
+              {
+                "file": "routes/auth/forgot-password.tsx",
+                "path": "forgot-password"
+              },
+              {
+                "file": "routes/auth/reset-password.tsx",
+                "path": "reset-password"
               }
             ]
           },
