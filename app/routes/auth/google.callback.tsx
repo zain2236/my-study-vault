@@ -60,7 +60,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       });
     }
 
-    // 4. Create session and redirect to dashboard
+    // 4. Create session
     return await createLoginSession(user.id, "/user/dashboard");
   } catch (err) {
     console.error("Google OAuth callback error:", err);

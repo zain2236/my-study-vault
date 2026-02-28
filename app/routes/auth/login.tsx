@@ -1,4 +1,5 @@
 import type { Route } from './+types/login';
+import type { MetaFunction } from 'react-router';
 import { Form, Link, redirect, useActionData, useNavigation, useSearchParams } from 'react-router';
 import { useState } from 'react';
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -7,6 +8,43 @@ import { createLoginSession, getUserId } from '../../utils/cookie-session/sessio
 import prisma from '../../utils/prisma.server';
 import { verifyPassword } from '~/utils/password/password.server';
 import { validateEmail } from '~/utils/validation/auth-validation.server';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Login - Study Vault | Access Your Study Resources' },
+    {
+      name: 'description',
+      content: 'Log in to your Study Vault account to access, upload, and manage your educational resources. Secure sign-in with email or Google.',
+    },
+    {
+      name: 'keywords',
+      content: 'study vault login, sign in, student login, access resources, study vault account',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://studyvault.com/login' },
+    { property: 'og:title', content: 'Login - Study Vault | Access Your Study Resources' },
+    {
+      property: 'og:description',
+      content: 'Log in to your Study Vault account to access and manage your educational resources.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Login - Study Vault | Access Your Study Resources' },
+    {
+      name: 'twitter:description',
+      content: 'Log in to your Study Vault account to access and manage your educational resources.',
+    },
+    { name: 'twitter:site', content: '@studyvault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'theme-color', content: '#d97757' },
+  ];
+};
 
 type ActionData = {
   error?: string;

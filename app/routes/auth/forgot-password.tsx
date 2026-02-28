@@ -1,4 +1,5 @@
 import type { Route } from './+types/forgot-password';
+import type { MetaFunction } from 'react-router';
 import { Form, Link, useActionData, useNavigation } from 'react-router';
 import { Mail, ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
 
@@ -6,6 +7,39 @@ import prisma from '../../utils/prisma.server';
 import { validateEmail } from '~/utils/validation/auth-validation.server';
 import { generateToken, hashToken } from '~/utils/crypto/token.server';
 import { sendPasswordResetEmail } from '~/utils/email/email.server';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Forgot Password - Study Vault' },
+    {
+      name: 'description',
+      content: 'Reset your Study Vault password. Enter your email to receive a secure password reset link.',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://studyvault.com/forgot-password' },
+    { property: 'og:title', content: 'Forgot Password - Study Vault' },
+    {
+      property: 'og:description',
+      content: 'Reset your Study Vault password. Enter your email to receive a secure password reset link.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Forgot Password - Study Vault' },
+    {
+      name: 'twitter:description',
+      content: 'Reset your Study Vault password securely.',
+    },
+    { name: 'twitter:site', content: '@studyvault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'theme-color', content: '#d97757' },
+  ];
+};
 
 type ActionData = {
   success?: boolean;

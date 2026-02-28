@@ -1,7 +1,58 @@
-import { useLoaderData } from 'react-router';
+import type { MetaFunction } from 'react-router';
 import { HowItWorks } from '../components/home-page-components/HowItWorks';
 import { CallToAction } from '~/components/home-page-components/CallToAction';
 import { Features } from '~/components/home-page-components/Features';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Features - Study Vault | Smart Tools for Students' },
+    {
+      name: 'description',
+      content: 'Discover Study Vault\'s powerful features — upload, organize, search, and share educational resources. Smart pagination, instant search, and a collaborative student community.',
+    },
+    {
+      name: 'keywords',
+      content: 'study vault features, student tools, upload resources, organize notes, search study materials, academic collaboration, smart pagination, resource sharing',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://studyvault.com/features' },
+    { property: 'og:title', content: 'Features - Study Vault | Smart Tools for Students' },
+    {
+      property: 'og:description',
+      content: 'Discover Study Vault\'s powerful features — upload, organize, search, and share educational resources with students worldwide.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+    { property: 'og:locale', content: 'en_US' },
+
+    // Twitter
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Features - Study Vault | Smart Tools for Students' },
+    {
+      name: 'twitter:description',
+      content: 'Discover Study Vault\'s powerful features — upload, organize, search, and share educational resources with students worldwide.',
+    },
+    { name: 'twitter:site', content: '@studyvault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'index, follow' },
+    { name: 'author', content: 'Study Vault' },
+    { name: 'theme-color', content: '#d97757' },
+
+    // Schema.org
+    {
+      'script:ld+json': {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Study Vault Features',
+        description: 'Discover Study Vault\'s powerful features for uploading, organizing, and sharing educational resources.',
+        url: 'https://studyvault.com/features',
+        isPartOf: { '@type': 'WebSite', name: 'Study Vault', url: 'https://studyvault.com' },
+      },
+    },
+  ];
+};
 
 export default function FeaturesPage()     {
     return (

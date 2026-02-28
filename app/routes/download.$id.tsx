@@ -13,7 +13,7 @@ import {
 } from '~/utils/download/download-helpers.server';
 import { objectExistsInR2, getObjectBufferFromR2 } from '~/utils/r2/r2.server';
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   try {
     const resourceId = Number((params as { id?: string })?.id);
     

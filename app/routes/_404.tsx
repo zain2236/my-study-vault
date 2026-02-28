@@ -1,6 +1,30 @@
+import type { MetaFunction } from 'react-router';
 import { Home, Search, ArrowLeft, BookOpen } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Page Not Found - Study Vault' },
+    {
+      name: 'description',
+      content: 'The page you are looking for could not be found. Return to Study Vault to browse educational resources.',
+    },
+
+    // Open Graph
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: 'Page Not Found - Study Vault' },
+    {
+      property: 'og:description',
+      content: 'The page you are looking for could not be found.',
+    },
+    { property: 'og:site_name', content: 'Study Vault' },
+
+    // Additional SEO
+    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'theme-color', content: '#d97757' },
+  ];
+};
 
 export default function NotFoundPage() {
   const [floatOffset, setFloatOffset] = useState(0);

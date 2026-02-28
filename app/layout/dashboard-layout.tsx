@@ -56,14 +56,21 @@ export default function DashboardLayout({ loaderData }: any) {
 
     // Update URL when debounced search changes
     useEffect(() => {
-        const params = new URLSearchParams(searchParams);
-        if (debouncedSearch.trim()) {
-            params.set('search', debouncedSearch.trim());
-        } else {
-            params.delete('search');
-        }
-        setSearchParams(params, { replace: true });
-    }, [debouncedSearch, setSearchParams]);
+        const currentSearch = searchParams.get('search') || '';
+        const newSearch = debouncedSearch.trim();
+        // Only update if the value actually changed to avoid infinite revalidation
+        if (currentSearch === newSearch) return;
+        setSearchParams((prev) => {
+            const params = new URLSearchParams(prev);
+            if (newSearch) {
+                params.set('search', newSearch);
+            } else {
+                params.delete('search');
+            }
+            return params;
+        }, { replace: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedSearch]);
 
     // Handlers for search and filters
     const handleSearchChange = (value: string) => {
