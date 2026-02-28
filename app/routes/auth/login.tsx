@@ -75,6 +75,7 @@ export default function LoginPage() {
   const oauthError = searchParams.get('error');
 
   const displayError = actionData?.error || (oauthError ? OAUTH_ERROR_MESSAGES[oauthError] || 'Sign-in failed.' : null);
+  const resetSuccess = searchParams.get('reset') === 'success';
 
   return (
     <Form method="post" className="space-y-5">
@@ -92,6 +93,13 @@ export default function LoginPage() {
           Sign in to access your study resources
         </p>
       </div>
+
+         {/* Success Message (after password reset) */}
+         {resetSuccess && (
+        <div className="mb-4 p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+          <p className="text-sm font-medium text-green-600 dark:text-green-400">Password reset successful! Sign in with your new password.</p>
+        </div>
+      )}
 
          {/* Error Message */}
          {displayError && (
@@ -168,9 +176,9 @@ export default function LoginPage() {
         </div>
 
         <div className="text-sm">
-          <a href="#" className="font-semibold text-[#d97757] hover:text-[#c66847] transition-colors underline-offset-2 hover:underline">
+          <Link to="/forgot-password" className="font-semibold text-[#d97757] hover:text-[#c66847] transition-colors underline-offset-2 hover:underline">
             Forgot password?
-          </a>
+          </Link>
         </div>
       </div>
 
