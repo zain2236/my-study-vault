@@ -11,7 +11,9 @@ model User {
   id         Int        @id @default(autoincrement())
   user_name  String
   email      String     @unique
-  password   String
+  password   String?
+  googleId   String?    @unique
+  profileImg String?
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
   resources  Resource[]
@@ -26,7 +28,7 @@ model Resource {
   file_path     String
   file_size     BigInt
   downloads     Int      @default(0)
-  isPublic Boolean @default(false)
+  isPublic      Boolean  @default(false)
   user_id       Int
   user          User     @relation(fields: [user_id], references: [id])
   created_at    DateTime @default(now())
