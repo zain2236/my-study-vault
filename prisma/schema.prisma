@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id         Int        @id @default(autoincrement())
-  user_name  String
-  email      String     @unique
-  password   String?
-  googleId   String?    @unique
-  profileImg String?
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  resources  Resource[]
+  id          Int                  @id @default(autoincrement())
+  user_name   String
+  email       String               @unique
+  password    String?
+  googleId    String?              @unique
+  profileImg  String?
+  created_at  DateTime             @default(now())
+  updated_at  DateTime             @updatedAt
+  resources   Resource[]
+  resetTokens PasswordResetToken[]
 }
 
 model Resource {
@@ -33,4 +34,14 @@ model Resource {
   user          User     @relation(fields: [user_id], references: [id])
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
