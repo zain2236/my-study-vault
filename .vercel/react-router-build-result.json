@@ -22,6 +22,8 @@
       "routes/auth/sign-up": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/login": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/auth/logout": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/auth/google": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/auth/google.callback": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/download.$id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api.r2-upload": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
@@ -129,6 +131,20 @@
         "parentId": "layout/auth-layout",
         "file": "app/routes/auth/logout.tsx",
         "path": "logout",
+        "config": {}
+      },
+      "routes/auth/google": {
+        "id": "routes/auth/google",
+        "parentId": "layout/auth-layout",
+        "file": "app/routes/auth/google.tsx",
+        "path": "auth/google",
+        "config": {}
+      },
+      "routes/auth/google.callback": {
+        "id": "routes/auth/google.callback",
+        "parentId": "layout/auth-layout",
+        "file": "app/routes/auth/google.callback.tsx",
+        "path": "auth/google/callback",
         "config": {}
       },
       "routes/download.$id": {
@@ -260,6 +276,18 @@
         "file": "routes/auth/logout.tsx",
         "path": "logout"
       },
+      "routes/auth/google": {
+        "id": "routes/auth/google",
+        "parentId": "layout/auth-layout",
+        "file": "routes/auth/google.tsx",
+        "path": "auth/google"
+      },
+      "routes/auth/google.callback": {
+        "id": "routes/auth/google.callback",
+        "parentId": "layout/auth-layout",
+        "file": "routes/auth/google.callback.tsx",
+        "path": "auth/google/callback"
+      },
       "routes/download.$id": {
         "id": "routes/download.$id",
         "parentId": "root",
@@ -355,6 +383,14 @@
               {
                 "file": "routes/auth/logout.tsx",
                 "path": "logout"
+              },
+              {
+                "file": "routes/auth/google.tsx",
+                "path": "auth/google"
+              },
+              {
+                "file": "routes/auth/google.callback.tsx",
+                "path": "auth/google/callback"
               }
             ]
           },

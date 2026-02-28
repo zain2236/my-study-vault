@@ -28,6 +28,8 @@ export default [
     route("sign-up", "routes/auth/sign-up.tsx"),
     route("login", "routes/auth/login.tsx"),
     route("logout", "routes/auth/logout.tsx"),
+    route("auth/google", "routes/auth/google.tsx"),
+    route("auth/google/callback", "routes/auth/google.callback.tsx"),
   ]),
 
   // Download route (no layout needed) - resource route for file downloads

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef, Suspense } from 'react';
 import { useLoaderData, useFetcher, useSearchParams, Await, type MetaFunction } from 'react-router';
 
 import { BrowseResourceCard } from '~/components/resources-page-components/BrowseResourceCard';
@@ -247,6 +247,7 @@ function BrowseResourcesContent({ data }: BrowseResourcesContentProps) {
   const [allResources, setAllResources] = useState<TransformedResource[]>(data.resources);
   const [nextCursor, setNextCursor] = useState<string | null>(data.nextCursor);
   const [hasMore, setHasMore] = useState(data.hasMore);
+  const isInitialMount = useRef(true);
 
   // Update resources when loader data changes
   useEffect(() => {
@@ -271,7 +272,13 @@ function BrowseResourcesContent({ data }: BrowseResourcesContentProps) {
   }, [allResources]);
 
   // Update URL params when filters change (using debounced search query)
+  // Skip the initial mount since the loader already ran with the correct URL params
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const params = new URLSearchParams();
     
     if (debouncedSearchQuery) {
