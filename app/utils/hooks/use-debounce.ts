@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from "react";
 
 /**
  * Custom hook for debouncing a value
  * @param value - The value to debounce
- * @param delay - Delay in milliseconds (default: 500)
+ * @param delay - Delay in milliseconds (default: 400)
  * @returns Debounced value
  */
-export function useDebounce<T>(value: T, delay: number = 500): T {
+export function useDebounce<T>(value: T, delay: number = 400): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export function useDebounce<T>(value: T, delay: number = 500): T {
  */
 export function useDebouncedCallback<T extends (...args: any[]) => any>(
   callback: T,
-  delay: number = 500
+  delay: number = 500,
 ): T {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -48,7 +48,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
         callback(...args);
       }, delay);
     }) as T,
-    [callback, delay]
+    [callback, delay],
   );
 
   // Cleanup on unmount
@@ -62,4 +62,3 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
 
   return debouncedCallback;
 }
-
