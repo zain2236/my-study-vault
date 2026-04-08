@@ -267,6 +267,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
     'image/png',
   ];
 
+
+  // Check if the file type is allowed
   const isAllowedFileType = (file: File) => {
     if (ALLOWED_TYPES.includes(file.type)) return true;
     const name = file.name.toLowerCase();
@@ -280,6 +282,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
     );
   };
 
+  // Get the effective content type of the file
   const getEffectiveContentType = (file: File) => {
     if (ALLOWED_TYPES.includes(file.type)) return file.type;
     const name = file.name.toLowerCase();
@@ -291,6 +294,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
     return file.type || 'application/octet-stream';
   };
 
+
+  // Handle loading more resources
   const handleLoadMore = () => {
     if (!nextCursor || fetcher.state === 'submitting') return;
 
@@ -309,6 +314,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
     fetcher.submit(formData, { method: 'POST' });
   };
 
+
+  // Handle file selection
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
     if (file && fileInputRef.current) {
@@ -318,6 +325,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
     }
   };
 
+  // Handle file drag & drop
   const handleDragDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();

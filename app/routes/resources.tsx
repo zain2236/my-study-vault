@@ -321,6 +321,8 @@ function BrowseResourcesContent({ data }: BrowseResourcesContentProps) {
     setSearchParams({}, { replace: true });
   }, [setSearchParams]);
 
+
+  // Handle load more button
   const handleLoadMore = useCallback(() => {
     if (!nextCursor || fetcher.state === 'submitting') return;
 
