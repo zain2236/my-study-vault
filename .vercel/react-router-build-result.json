@@ -28,6 +28,7 @@
       "routes/auth/reset-password": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/download.$id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api.r2-upload": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.summarize": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/$": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
@@ -175,6 +176,13 @@
         "parentId": "root",
         "file": "app/routes/api.r2-upload.tsx",
         "path": "api.r2-upload",
+        "config": {}
+      },
+      "routes/api.summarize": {
+        "id": "routes/api.summarize",
+        "parentId": "root",
+        "file": "app/routes/api.summarize.tsx",
+        "path": "api/summarize",
         "config": {}
       },
       "routes/_404": {
@@ -328,6 +336,12 @@
         "file": "routes/api.r2-upload.tsx",
         "path": "api.r2-upload"
       },
+      "routes/api.summarize": {
+        "id": "routes/api.summarize",
+        "parentId": "root",
+        "file": "routes/api.summarize.tsx",
+        "path": "api/summarize"
+      },
       "routes/_404": {
         "id": "routes/_404",
         "parentId": "root",
@@ -437,6 +451,10 @@
           {
             "file": "routes/api.r2-upload.tsx",
             "path": "api.r2-upload"
+          },
+          {
+            "file": "routes/api.summarize.tsx",
+            "path": "api/summarize"
           },
           {
             "file": "routes/_404.tsx",

@@ -40,6 +40,9 @@ export default [
   // R2 upload API route (server action for presigned URLs + confirm)
   route("api.r2-upload", "routes/api.r2-upload.tsx"),
 
+  // AI Summarize API route
+  route("api/summarize", "routes/api.summarize.tsx"),
+
   // 404 route
   route("404", "routes/_404.tsx"),
 

@@ -40,10 +40,13 @@ function validateFileMeta(size: number, type: string, name: string) {
   return null;
 }
 
+// Sanitize file name
 function sanitizeFileName(name: string) {
   return name.replace(/[^a-zA-Z0-9.-]/g, '-');
 }
 
+
+// Main action function
 export async function action({ request }: Route.ActionArgs) {
   const userId = await getUserId(request);
   if (!userId) {
@@ -90,6 +93,7 @@ export async function action({ request }: Route.ActionArgs) {
         contentType: fileType,
       });
 
+      // Return the pre-signed URL and file key to the client
       return Response.json(
         {
           ok: true,
@@ -136,6 +140,7 @@ export async function action({ request }: Route.ActionArgs) {
       );
     }
 
+    // Create resource in database
     try {
       const resource = await createResource({
         title: title as string,
@@ -147,6 +152,7 @@ export async function action({ request }: Route.ActionArgs) {
         user_id: userId as number,
       });
 
+      // Return the resource ID to the client 
       return Response.json(
         {
           ok: true,
