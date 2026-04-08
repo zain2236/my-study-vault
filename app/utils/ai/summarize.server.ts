@@ -46,12 +46,17 @@ async function extractTextFromBuffer(
 ): Promise<string> {
   const ext = getFileExtension(filePath);
 
-  // If file is PDF
   if (ext === ".pdf") {
-    const pdfModule = await import("pdf-parse");
-    const pdfParse = (pdfModule as any).default || pdfModule;
-    const data = await pdfParse(buffer);
-    return data.text;
+    const { PDFParse } = await import("pdf-parse");
+    const parser = new PDFParse({ data: buffer });
+    try {
+      const data = await parser.getText();
+      return data.text;
+    } catch (error: any) {
+      return "";
+    } finally {
+      await parser.destroy();
+    }
   }
 
   // If file is DOCX
