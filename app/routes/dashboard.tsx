@@ -339,7 +339,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
   };
 
 
-
+  // handle File upload submition
   const handleUploadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -566,7 +566,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
 
       {/* Show upload modal if it is open */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 dark:bg-gray-900/70 backdrop-blur-sm" onClick={() => setUploadModalOpen(false)}>
+        <div className=" fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 dark:bg-gray-900/70 backdrop-blur-sm" onClick={() => setUploadModalOpen(false)}>
           <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Upload Resource</h3>
@@ -585,6 +585,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
               </div>
             )}
 
+            {/* Resource Upload Form */}
             <Form method="post" encType="multipart/form-data" className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleUploadSubmit}>
               <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Semester</label>
