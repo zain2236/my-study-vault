@@ -6,13 +6,13 @@ import { PageHeader } from '~/components/resources-page-components/PageHeader';
 import { StatsBanner } from '~/components/resources-page-components/StatsBanner';
 import { EmptyState } from '~/components/resources-page-components/EmptyState';
 import { LoadMoreButton } from '~/components/resources-page-components/LoadMoreButton';
-import { getPaginatedResources, getTotalResourceCount, getTotalUserCount } from '~/utils/resources/resource-pagination.server';
+import { getPaginatedResources, getTotalResourceCount, getTotalUserCount } from '~/server/resources/resource-pagination.server';
 import { 
   calculateSemesterCounts, 
   type FilterState 
-} from '~/utils/resources/resource-filters';
-import type { TransformedResource } from '~/utils/resources/resource-transform.server';
-import { useDebounce } from '~/utils/hooks/use-debounce';
+} from '~/client/resources/resource-filters';
+import type { TransformedResource } from '~/server/resources/resource-transform.server';
+import { useDebounce } from '~/client/hooks/use-debounce';
 
 export const meta: MetaFunction = () => {
   return [
@@ -156,7 +156,7 @@ export async function action({ request }: { request: Request }) {
       if (!resourceId) return { error: 'Resource ID is required' };
 
       try {
-        const { getResourceForDownload } = await import('~/utils/prisma/resource-prisma.server');
+        const { getResourceForDownload } = await import('~/server/prisma/resource-prisma.server');
         const resource = await getResourceForDownload(Number(resourceId));
         if (!resource) {
           return { error: 'Resource not found. It may have been deleted.' };
@@ -167,10 +167,10 @@ export async function action({ request }: { request: Request }) {
         // Check if file exists in storage (local or R2)
         let exists = false;
         if (filePath.startsWith('/uploads/')) {
-          const { fileExists } = await import('~/utils/download/download-helpers.server');
+          const { fileExists } = await import('~/server/download/download-helpers.server');
           exists = fileExists(filePath);
         } else {
-          const { objectExistsInR2 } = await import('~/utils/r2/r2.server');
+          const { objectExistsInR2 } = await import('~/server/r2/r2.server');
           exists = await objectExistsInR2(filePath);
         }
 

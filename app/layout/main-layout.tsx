@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import { Footer } from "~/components/layout-components/Footer";
 import { Navbar } from "~/components/layout-components/Navbar";
 import type { Route } from "./+types/main-layout";
-import { getUserId } from "~/utils/cookie-session/session.server";
+import { getUserId } from "~/server/cookie-session/session.server";
 
 export async function loader({request} : Route.LoaderArgs) {
     const userId = await getUserId(request)

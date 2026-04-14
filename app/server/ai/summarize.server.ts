@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { getObjectBufferFromR2 } from "~/utils/r2/r2.server";
+import { getObjectBufferFromR2 } from "~/server/r2/r2.server";
 
 const AI_API_KEY = process.env.AI_API_KEY;
 

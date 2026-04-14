@@ -4,10 +4,10 @@ import { Form, Link, redirect, useActionData, useLoaderData, useNavigation } fro
 import { useState } from 'react';
 import { Lock, ArrowLeft, Eye, EyeOff, Loader2, ShieldAlert } from 'lucide-react';
 
-import prisma from '../../utils/prisma.server';
-import { hashToken } from '~/utils/crypto/token.server';
-import { hashPassword } from '~/utils/password/password.server';
-import { validatePasswordLength } from '~/utils/validation/auth-validation.server';
+import prisma from '~/server/prisma.server';
+import { hashToken } from '~/server/crypto/token.server';
+import { hashPassword } from '~/server/password/password.server';
+import { validatePasswordLength } from '~/server/validation/auth-validation.server';
 
 export const meta: MetaFunction = () => {
   return [

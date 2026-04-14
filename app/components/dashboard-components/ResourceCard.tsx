@@ -2,7 +2,7 @@ import { File, FileText, MoreVertical, BookOpen, Calendar, Download, Trash2, Glo
 import { memo, useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useRevalidator, useFetcher } from 'react-router';
 import Markdown from 'react-markdown';
-import { getRelativeTime } from '~/utils/handle-time/relative-time';
+import { getRelativeTime } from '~/client/handle-time/relative-time';
 import { DeleteConfirmModal } from '~/components/ui-components';
 
 interface Resource {

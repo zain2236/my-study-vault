@@ -1,5 +1,5 @@
-import { getRelativeTime } from '~/utils/handle-time/relative-time';
-import { formatFileSize, getFileType } from '~/utils/format/file-format';
+import { getRelativeTime } from '~/client/handle-time/relative-time';
+import { formatFileSize, getFileType } from '~/client/format/file-format';
 
 export interface TransformedResource {
   id: number;

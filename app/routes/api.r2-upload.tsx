@@ -1,8 +1,8 @@
 import type { Route } from './+types/api.r2-upload';
 
-import { getUserId } from '~/utils/cookie-session/session.server';
-import { createResource } from '~/utils/prisma/dashboard-prisma.server';
-import { createPresignedUploadUrl } from '~/utils/r2/r2.server';
+import { getUserId } from '~/server/cookie-session/session.server';
+import { createResource } from '~/server/prisma/dashboard-prisma.server';
+import { createPresignedUploadUrl } from '~/server/r2/r2.server';
 
 
 const MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB

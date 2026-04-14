@@ -1,17 +1,8 @@
 import type { Route } from "./+types/api.chatbot";
-import { sendChatMessage } from "~/utils/ai/chatbot.server";
-import type { ChatMessage } from "~/utils/ai/chatbot.server";
+import { sendChatMessage } from "~/server/ai/chatbot.server";
+import type { ChatMessage } from "~/server/ai/chatbot.server";
 
-/**
- * POST /api/chatbot
- *
- * Accepts JSON:
- *   { text: string, history?: { role: string, content: string }[] }
- *
- * Returns JSON:
- *   { ok: true, reply: string }
- *   { ok: false, error: string }
- */
+
 export async function action({ request }: Route.ActionArgs) {
   try {
     if (request.method !== "POST") {

@@ -1,9 +1,9 @@
 import { redirect } from "react-router";
 import type { Route } from "./+types/google.callback";
 
-import { getGoogleTokens, getGoogleUserInfo } from "~/utils/google-auth/google-auth.server";
-import { createLoginSession } from "~/utils/cookie-session/session.server";
-import prisma from "~/utils/prisma.server";
+import { getGoogleTokens, getGoogleUserInfo } from "~/server/google-auth/google-auth.server";
+import { createLoginSession } from "~/server/cookie-session/session.server";
+import prisma from "~/server/prisma.server";
 
 /** Handle GoogleOAuth callback: exchange code → upsert user → create session. */
 export async function loader({ request }: Route.LoaderArgs) {

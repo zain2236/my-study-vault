@@ -4,10 +4,10 @@ import { Form, Link, redirect, useActionData, useNavigation, useSearchParams } f
 import { useState } from 'react';
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react';
 
-import { createLoginSession, getUserId } from '../../utils/cookie-session/session.server';
-import prisma from '../../utils/prisma.server';
-import { verifyPassword } from '~/utils/password/password.server';
-import { validateEmail } from '~/utils/validation/auth-validation.server';
+import { createLoginSession, getUserId } from '~/server/cookie-session/session.server';
+import prisma from '~/server/prisma.server';
+import { verifyPassword } from '~/server/password/password.server';
+import { validateEmail } from '~/server/validation/auth-validation.server';
 
 export const meta: MetaFunction = () => {
   return [
