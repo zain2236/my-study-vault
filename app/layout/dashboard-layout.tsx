@@ -4,9 +4,9 @@ import { Outlet, redirect, useSearchParams, useLocation } from 'react-router';
 
 import { Header } from '~/components/dashboard-components/Header';
 import { Sidebar } from '~/components/dashboard-components/Sidebar';
-import { getUserId } from '~/utils/cookie-session/session.server';
-import prisma from '~/utils/prisma.server';
-import { useDebounce } from '~/utils/hooks/use-debounce';
+import { getUserId } from '~/server/cookie-session/session.server';
+import prisma from '~/server/prisma.server';
+import { useDebounce } from '~/client/hooks/use-debounce';
 
 export async function loader({ request }: Route.LoaderArgs) {
     try {

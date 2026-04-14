@@ -4,14 +4,14 @@ import { readFile } from 'fs/promises';
 import { 
   getResourceForDownload, 
   incrementResourceDownload 
-} from '~/utils/prisma/resource-prisma.server';
+} from '~/server/prisma/resource-prisma.server';
 import {
   getMimeType,
   getFullFilePath,
   fileExists,
   generateDownloadFileName
-} from '~/utils/download/download-helpers.server';
-import { objectExistsInR2, getObjectBufferFromR2 } from '~/utils/r2/r2.server';
+} from '~/server/download/download-helpers.server';
+import { objectExistsInR2, getObjectBufferFromR2 } from '~/server/r2/r2.server';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   try {

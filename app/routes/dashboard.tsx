@@ -4,16 +4,16 @@ import { useState, useRef, useEffect, Suspense } from 'react';
 import { Upload, X, Plus, Filter, Loader2 } from 'lucide-react';
 
 import { ResourceCard } from '~/components/dashboard-components/ResourceCard';
-import { getUserId } from '~/utils/cookie-session/session.server';
-import { deleteFileSafely } from '~/utils/delete-file/file-delete.server';
+import { getUserId } from '~/server/cookie-session/session.server';
+import { deleteFileSafely } from '~/server/delete-file/file-delete.server';
 import {
   getUserResourceById,
   updateResourcePublishStatus,
 
   deleteResource,
   getUserSemesterCounts
-} from '~/utils/prisma/dashboard-prisma.server';
-import { getPaginatedResources } from '~/utils/resources/resource-pagination.server';
+} from '~/server/prisma/dashboard-prisma.server';
+import { getPaginatedResources } from '~/server/resources/resource-pagination.server';
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -150,10 +150,10 @@ export async function action({ request }: Route.ActionArgs) {
         // Check if file exists in storage (local or R2)
         let exists = false;
         if (filePath.startsWith('/uploads/')) {
-          const { fileExists } = await import('~/utils/download/download-helpers.server');
+          const { fileExists } = await import('~/server/download/download-helpers.server');
           exists = fileExists(filePath);
         } else {
-          const { objectExistsInR2 } = await import('~/utils/r2/r2.server');
+          const { objectExistsInR2 } = await import('~/server/r2/r2.server');
           exists = await objectExistsInR2(filePath);
         }
 
@@ -339,7 +339,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
   };
 
 
-
+  // handle File upload submition
   const handleUploadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -566,7 +566,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
 
       {/* Show upload modal if it is open */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 dark:bg-gray-900/70 backdrop-blur-sm" onClick={() => setUploadModalOpen(false)}>
+        <div className=" fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 dark:bg-gray-900/70 backdrop-blur-sm" onClick={() => setUploadModalOpen(false)}>
           <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-2xl max-w-2xl w-full p-8" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Upload Resource</h3>
@@ -585,6 +585,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
               </div>
             )}
 
+            {/* Resource Upload Form */}
             <Form method="post" encType="multipart/form-data" className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleUploadSubmit}>
               <div>
                 <label className="block text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Semester</label>

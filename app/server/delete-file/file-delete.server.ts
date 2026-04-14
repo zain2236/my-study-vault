@@ -1,7 +1,7 @@
 import { unlink } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import { deleteObjectFromR2 } from '~/utils/r2/r2.server';
+import { deleteObjectFromR2 } from '~/server/r2/r2.server';
 
 /**
  * Deletes a file from the local storage

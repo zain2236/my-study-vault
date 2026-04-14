@@ -1,4 +1,4 @@
-import type { TransformedResource } from './resource-transform.server';
+import type { TransformedResource } from '~/server/resources/resource-transform.server';
 
 export interface FilterState {
   semester: string;

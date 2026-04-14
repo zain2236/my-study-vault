@@ -3,10 +3,10 @@ import type { MetaFunction } from 'react-router';
 import { Form, Link, useActionData, useNavigation } from 'react-router';
 import { Mail, ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
 
-import prisma from '../../utils/prisma.server';
-import { validateEmail } from '~/utils/validation/auth-validation.server';
-import { generateToken, hashToken } from '~/utils/crypto/token.server';
-import { sendPasswordResetEmail } from '~/utils/email/email.server';
+import prisma from '~/server/prisma.server';
+import { validateEmail } from '~/server/validation/auth-validation.server';
+import { generateToken, hashToken } from '~/server/crypto/token.server';
+import { sendPasswordResetEmail } from '~/server/email/email.server';
 
 export const meta: MetaFunction = () => {
   return [

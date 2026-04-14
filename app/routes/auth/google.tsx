@@ -1,6 +1,6 @@
 import { redirect } from "react-router";
-import { getGoogleAuthURL } from "~/utils/google-auth/google-auth.server";
-import { getUserId } from "~/utils/cookie-session/session.server";
+import { getGoogleAuthURL } from "~/server/google-auth/google-auth.server";
+import { getUserId } from "~/server/cookie-session/session.server";
 import type { Route } from "./+types/google";
 
 /** Redirect authenticated users; otherwise send to Google consent screen. */

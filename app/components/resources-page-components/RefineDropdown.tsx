@@ -1,6 +1,6 @@
 import { SlidersHorizontal, ChevronDown, X } from 'lucide-react';
-import type { FilterState } from '~/utils/resources/resource-filters';
-import { hasActiveFilters } from '~/utils/resources/resource-filters';
+import type { FilterState } from '~/client/resources/resource-filters';
+import { hasActiveFilters } from '~/client/resources/resource-filters';
 import { FilterButton } from './FilterButton';
 
 interface RefineDropdownProps {

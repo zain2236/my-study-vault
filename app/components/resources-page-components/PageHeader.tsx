@@ -1,5 +1,5 @@
 import { Sparkles } from 'lucide-react';
-import type { FilterState } from '~/utils/resources/resource-filters';
+import type { FilterState } from '~/client/resources/resource-filters';
 import { SearchBar } from './SearchBar';
 import { RefineDropdown } from './RefineDropdown';
 

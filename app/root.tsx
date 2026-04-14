@@ -10,6 +10,7 @@ import {
 
 import type { Route } from "./+types/root";
 import NotFoundPageComponent from "./routes/_404";
+import Chatbot from "./components/ui-components/Chatbot";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -69,6 +70,7 @@ export default function App() {
   return (
     <>
       <Outlet />
+      <Chatbot />
     </>
   );
 }

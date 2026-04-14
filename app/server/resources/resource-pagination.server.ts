@@ -1,4 +1,4 @@
-import prisma from '~/utils/prisma.server';
+import prisma from '~/server/prisma.server';
 import { transformResource, type TransformedResource } from './resource-transform.server';
 import { 
   parseCursor, 
@@ -6,7 +6,7 @@ import {
   DEFAULT_PAGE_SIZE,
   type CursorPaginationParams,
   type CursorPaginationResult 
-} from '~/utils/pagination/cursor-pagination.server';
+} from '~/server/pagination/cursor-pagination.server';
 
 
 export interface ResourcePaginationParams extends CursorPaginationParams {
@@ -133,11 +133,11 @@ export async function getPaginatedResources(
  * Gets total count of public resources (for stats)
  * Re-exported from resource-prisma.server for backward compatibility
  */
-export { getTotalPublicResourceCount as getTotalResourceCount } from '~/utils/prisma/resource-prisma.server';
+export { getTotalPublicResourceCount as getTotalResourceCount } from '~/server/prisma/resource-prisma.server';
 
 /**
  * Gets total count of users (for stats)
  * Re-exported from resource-prisma.server for backward compatibility
  */
-export { getTotalUserCount } from '~/utils/prisma/resource-prisma.server';
+export { getTotalUserCount } from '~/server/prisma/resource-prisma.server';
 

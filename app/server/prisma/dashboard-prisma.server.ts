@@ -1,4 +1,4 @@
-import prisma from '~/utils/prisma.server';
+import prisma from '~/server/prisma.server';
 
 /**
  * Get all resources for a specific user

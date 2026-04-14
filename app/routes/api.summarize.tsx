@@ -1,10 +1,10 @@
 import type { Route } from "./+types/api.summarize";
-import { getUserId } from "~/utils/cookie-session/session.server";
-import { getUserResourceById } from "~/utils/prisma/dashboard-prisma.server";
+import { getUserId } from "~/server/cookie-session/session.server";
+import { getUserResourceById } from "~/server/prisma/dashboard-prisma.server";
 import {
   isSummarizable,
   summarizeResource,
-} from "~/utils/ai/summarize.server";
+} from "~/server/ai/summarize.server";
 
 export async function action({ request }: Route.ActionArgs) {
   try {

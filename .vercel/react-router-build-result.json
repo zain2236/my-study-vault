@@ -29,6 +29,7 @@
       "routes/download.$id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api.r2-upload": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/api.summarize": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.chatbot": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/_404": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
       "routes/$": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
     },
@@ -183,6 +184,13 @@
         "parentId": "root",
         "file": "app/routes/api.summarize.tsx",
         "path": "api/summarize",
+        "config": {}
+      },
+      "routes/api.chatbot": {
+        "id": "routes/api.chatbot",
+        "parentId": "root",
+        "file": "app/routes/api.chatbot.tsx",
+        "path": "api/chatbot",
         "config": {}
       },
       "routes/_404": {
@@ -342,6 +350,12 @@
         "file": "routes/api.summarize.tsx",
         "path": "api/summarize"
       },
+      "routes/api.chatbot": {
+        "id": "routes/api.chatbot",
+        "parentId": "root",
+        "file": "routes/api.chatbot.tsx",
+        "path": "api/chatbot"
+      },
       "routes/_404": {
         "id": "routes/_404",
         "parentId": "root",
@@ -455,6 +469,10 @@
           {
             "file": "routes/api.summarize.tsx",
             "path": "api/summarize"
+          },
+          {
+            "file": "routes/api.chatbot.tsx",
+            "path": "api/chatbot"
           },
           {
             "file": "routes/_404.tsx",

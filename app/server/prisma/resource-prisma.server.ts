@@ -1,4 +1,4 @@
-import prisma from '~/utils/prisma.server';
+import prisma from '~/server/prisma.server';
 
 /**
  * Get resource by ID without incrementing download count
