@@ -43,6 +43,9 @@ export default [
   // AI Summarize API route
   route("api/summarize", "routes/api.summarize.tsx"),
 
+  // AI Chatbot API route
+  route("api/chatbot", "routes/api.chatbot.tsx"),
+
   // 404 route
   route("404", "routes/_404.tsx"),
 
